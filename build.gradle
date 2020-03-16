@@ -13,16 +13,31 @@ repositories {
 }
 
 dependencies {
+    compile "org.springframework.boot:spring-boot-starter-web"
     implementation 'org.springframework.boot:spring-boot-starter'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
+    compile "mysql:mysql-connector-java:5.1.47"
+    compile "com.zaxxer:HikariCP:3.3.0"
     compile "org.quartz-scheduler:quartz:2.2.3"
     compile 'org.springframework:spring-context-support'
     compileOnly "org.projectlombok:lombok:1.18.4"
     compile 'joda-time:joda-time'
     compile "com.fasterxml.jackson.datatype:jackson-datatype-joda:2.9.8"
     compile 'org.apache.commons:commons-text:1.6'
+    compile "org.eclipse.persistence:javax.persistence:2.1.1"
+    compile "org.javassist:javassist:3.23.1-GA"
+    compile("org.springframework.boot:spring-boot-starter-data-jpa") {
+        exclude module: "hibernate-entitymanager"
+        exclude module: "hibernate-core"
+    }
+    // https://mvnrepository.com/artifact/ma.glasnost.orika/orika-core
+    compile "ma.glasnost.orika:orika-core:1.5.2"
+    compile("org.eclipse.persistence:eclipselink:2.7.0") {
+        // https://bugs.eclipse.org/bugs/show_bug.cgi?id=525457
+        exclude module: "org.eclipse.persistenc:javax.persistence"
+    }
 }
 
 test {
