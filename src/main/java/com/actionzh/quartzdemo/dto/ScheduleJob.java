@@ -32,22 +32,36 @@ public class ScheduleJob extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "tenant_id")
     private Long tenantId;
+    @Column(name = "job_name")
     private String jobName;
+    @Column(name = "alias_name")
     private String aliasName;
+    @Column(name = "job_group")
     private String jobGroup;
+    @Column(name = "job_trigger")
     private String jobTrigger;
+    @Column(name = "status")
     private String status;
+    @Column(name = "cron_expression")
     private String cronExpression;
 
+    @Column(name = "timing")
     @Convert(converter = JodaTimeConverter.class)
     private DateTime timing;
+    @Column(name = "from_date")
     @Convert(converter = JodaTimeConverter.class)
     private DateTime fromDate;
+    @Column(name = "to_date")
     @Convert(converter = JodaTimeConverter.class)
     private DateTime toDate;
+    @Column(name = "scheduled")
     private Boolean scheduled;
+    @Column(name = "description")
     private String description;
+    @Column(name = "delegate_bean")
     private String delegateBean;
+    @Column(name = "customer_journey_trigger_id")
     private String customerJourneyTriggerId;
 }

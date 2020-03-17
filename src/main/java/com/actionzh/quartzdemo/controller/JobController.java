@@ -4,11 +4,15 @@ import com.actionzh.quartzdemo.dto.ScheduleJob;
 import com.actionzh.quartzdemo.dto.ScheduleJobDTO;
 import com.actionzh.quartzdemo.job.base.BaseCronJob;
 import com.actionzh.quartzdemo.service.ScheduleJobService;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+@Controller
+@RequestMapping("/job")
 public class JobController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JobController.class);
@@ -38,6 +42,10 @@ public class JobController {
     public void delete(@PathVariable(value = "id") Long id) {
         LOGGER.info("request delete, id [{}]", id);
         scheduleJobService.delete(id);
+    }
+
+    public static void main(String[] args) {
+        System.out.println(DateTime.now());
     }
 
 }

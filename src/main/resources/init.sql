@@ -126,3 +126,27 @@ CREATE TABLE IF NOT EXISTS `QRTZ_LOCKS` (
 	LOCK_NAME VARCHAR(40) NOT NULL,
 	PRIMARY KEY (SCHED_NAME, LOCK_NAME)
 ) ENGINE = InnoDB;
+
+CREATE TABLE `schedule_job` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `version` bigint(20) NOT NULL,
+  `alias_name` varchar(255) DEFAULT NULL,
+  `cron_expression` varchar(255) DEFAULT NULL,
+  `date_created` datetime NOT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `job_group` varchar(255) DEFAULT NULL,
+  `job_name` varchar(255) DEFAULT NULL,
+  `job_trigger` varchar(255) DEFAULT NULL,
+  `last_updated` datetime NOT NULL,
+  `status` varchar(255) NOT NULL,
+  `tenant_id` bigint(20) NOT NULL,
+  `delegate_bean` varchar(255) NOT NULL,
+  `customer_journey_trigger_id` varchar(255) DEFAULT NULL,
+  `scheduled` bit(1) NOT NULL,
+  `timing` datetime DEFAULT NULL,
+  `from_date` datetime DEFAULT NULL,
+  `to_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_t_status` (`tenant_id`,`status`)
+) ENGINE=InnoDB AUTO_INCREMENT=305 DEFAULT CHARSET=utf8;
+

@@ -1,12 +1,16 @@
 package com.actionzh.quartzdemo.job;
 
+import com.actionzh.quartzdemo.dto.ScheduleJob;
 import com.actionzh.quartzdemo.dto.ScheduleJobDTO;
 import com.actionzh.quartzdemo.job.base.BaseCronJob;
+import com.actionzh.quartzdemo.job.base.TenantAwareCronJob;
+import com.actionzh.quartzdemo.service.ScheduleJobService;
 import com.actionzh.quartzdemo.utils.ApplicationContextHolder;
 import com.actionzh.quartzdemo.utils.JsonMapper;
 import org.quartz.JobExecutionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
 
@@ -17,6 +21,8 @@ public class CronJobExecutor extends QuartzJobBean {
 
     private final static JsonMapper jsonMapper = JsonMapper.INSTANCE;
     public static final Long DEFAULT_ID = -1L;
+    @Autowired
+    private ScheduleJobService scheduleJobService;
 
     @Override
     protected void executeInternal(JobExecutionContext context) {
@@ -24,11 +30,10 @@ public class CronJobExecutor extends QuartzJobBean {
 
         ScheduleJobDTO scheduleJobDTO = jsonMapper.fromJson(context.getMergedJobDataMap().getString(BaseCronJob.JOB_PARAMS), ScheduleJobDTO.class);
         BaseCronJob job = (BaseCronJob) ApplicationContextHolder.getApplicationContext().getBean(scheduleJobDTO.getDelegateBean());
-        /*if (job instanceof TenantAwareCronJob) {
+        if (job instanceof TenantAwareCronJob) {
             try {
                 LOGGER.info("==== Start to execute tenant aware scheduleJob [{}] ===", scheduleJobDTO.getJobName());
                 preHandle(scheduleJobDTO.getTenantId());
-                AsyncJobHelper.setJobContext(scheduleJobDTO.getTenantId(), DEFAULT_ID, Locale.SIMPLIFIED_CHINESE.toString());
                 scheduleJobService.updateStatus(scheduleJobDTO.getId(), ScheduleJob.STATUS_RUNNING);
                 ((TenantAwareCronJob) job).executeInternal(context, scheduleJobDTO.getTenantId());
                 LOGGER.info("==== finished workflow timer scheduleJob [{}] ===", scheduleJobDTO.getId());
@@ -36,11 +41,11 @@ public class CronJobExecutor extends QuartzJobBean {
             } catch (Exception ex) {
                 LOGGER.info("==== error occurred when executing workflow timer scheduleJob [{}] ===", scheduleJobDTO.getId(), ex);
                 scheduleJobService.updateStatus(scheduleJobDTO.getId(), ScheduleJob.STATUS_ABORT);
-                throw new AppException("Workflow timer job error!", ex);
+                throw new RuntimeException("Workflow timer job error!", ex);
             } finally {
                 postHandle();
             }
-        }*/
+        }
     }
 
     private void preHandle(Long tenantId) {

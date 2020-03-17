@@ -25,10 +25,11 @@ public abstract class BaseEntity implements Serializable {
 
     @Convert(converter = JodaTimeConverter.class)
     @CreatedDate
-    @Column(updatable = false)
+    @Column(name = "date_created", updatable = false)
     private DateTime dateCreated;
 
     @Convert(converter = JodaTimeConverter.class)
     @LastModifiedDate
+    @Column(name = "last_updated")
     private DateTime lastUpdated;
 }
